@@ -7,32 +7,46 @@ dotenv.config();
 
 const app = express();
 
+// ✅ Allow only your frontend
+const allowedOrigins = ['https://nik-gpt.vercel.app'];
+
 app.use(cors({
-  origin: 'https://nik-gpt.vercel.app',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['POST', 'GET', 'OPTIONS'],
   credentials: true,
 }));
+
+// ✅ Referrer-Policy
+app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  next();
+});
+
 app.use(express.json());
 
-// ✅ Handle preflight request
-app.options('/', cors());
-
-// ✅ OpenRouter
+// ✅ OpenRouter AI Setup
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPEN_ROUTER_API_KEY,
   defaultHeaders: {
     'HTTP-Referer': 'https://nik-gpt.vercel.app',
-    'X-Title': 'Nik Gpt',
+    'X-Title': 'Nik GPT',
   },
 });
 
-// ✅ Health check
+// ✅ Health Check Route
 app.get('/', (req, res) => {
-  res.send({ message: 'Hello from Nik’s AI Server via OpenRouter!' });
+  res.send({ message: '🟢 Nik GPT Server is running (ESM).' });
 });
 
-// ✅ POST /chat
-app.post('/', async (req, res) => {
+// ✅ Chat Route
+app.post('/chat', async (req, res) => {
   const { prompt } = req.body;
 
   const predefinedReplies = [
@@ -42,7 +56,7 @@ app.post('/', async (req, res) => {
     { keywords: ["what can you do"], reply: "I can answer your questions, explain concepts, and more." },
   ];
 
-  function getPredefinedReply(prompt) {
+  const getPredefinedReply = (prompt) => {
     const lowerPrompt = prompt.trim().toLowerCase();
     for (const item of predefinedReplies) {
       if (item.keywords.some(k => lowerPrompt.includes(k))) {
@@ -50,7 +64,7 @@ app.post('/', async (req, res) => {
       }
     }
     return null;
-  }
+  };
 
   const predefined = getPredefinedReply(prompt);
   if (predefined) return res.json({ reply: predefined });
@@ -65,12 +79,13 @@ app.post('/', async (req, res) => {
     const reply = completion.choices[0]?.message?.content || 'No response';
     res.json({ reply });
   } catch (error) {
-    console.error('OpenRouter API error:', error.message);
-    res.status(500).json({ error: 'Something went wrong' });
+    console.error('❌ Error:', error.message);
+    res.status(500).json({ error: 'Something went wrong on the server.' });
   }
 });
 
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🟢 Server is running at http://localhost:${PORT}`);
+  console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
