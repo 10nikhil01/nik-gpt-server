@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 // ✅ Allow only your frontend
-const allowedOrigins = ['https://nik-gpt.vercel.app/'];
+const allowedOrigins = ['https://nik-gpt.vercel.app'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -42,7 +42,7 @@ const openai = new OpenAI({
 
 // ✅ Health Check Route
 app.get('/', (req, res) => {
-  res.send({ message: '🟢 Nik GPT Server is running (ESM).' });
+  res.send({ message: '🟢 Nik GPT Server is running' });
 });
 
 // ✅ Chat Route
@@ -71,7 +71,7 @@ app.post('/chat', async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'google/gemini-pro-1.5',
+      model: 'meta-llama/llama-4-maverick',
       max_tokens: 400,
       messages: [{ role: 'user', content: prompt }],
     });
