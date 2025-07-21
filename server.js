@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 // ✅ Allow only your frontend
-const allowedOrigins = ['https://nik-gpt.vercel.app'];
+const allowedOrigins = ['https://nik-gpt.vercel.app/'];
 
 app.use(cors({
   origin: function (origin, callback) {
