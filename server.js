@@ -42,7 +42,7 @@ const openai = new OpenAI({
 
 // ✅ Health Check Route
 app.get('/', (req, res) => {
-  res.send({ message: '🟢 Nik GPT Server is running (ESM).' });
+  res.send({ message: '🟢 Nik Bot is running' });
 });
 
 // ✅ Chat Route
