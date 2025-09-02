@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 // ✅ Allow only your frontend
-const allowedOrigins = ['https://nik-gpt.vercel.app'];
+const allowedOrigins = ['https://niqai.in'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -35,14 +35,14 @@ const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPEN_ROUTER_API_KEY,
   defaultHeaders: {
-    'HTTP-Referer': 'https://nik-gpt.vercel.app',
-    'X-Title': 'Nik GPT',
+    'HTTP-Referer': 'https://niqai.in',
+    'X-Title': 'NIQ AI',
   },
 });
 
 // ✅ Health Check Route
 app.get('/', (req, res) => {
-  res.send({ message: '🟢 Nik GPT Server is running' });
+  res.send({ message: '🟢 NIQ AI Server is running' });
 });
 
 // ✅ Chat Route
@@ -50,9 +50,9 @@ app.post('/chat', async (req, res) => {
   const { prompt } = req.body;
 
   const predefinedReplies = [
-    { keywords: ["who are you", "your identity", "what are you"], reply: "I'm an AI chatbot created by Nikhil." },
-    { keywords: ["your name", "what's your name"], reply: "My name is NikhilBot, created by Nikhil." },
-    { keywords: ["who made you", "who created you", "who build you"], reply: "I was developed by Nikhil using OpenAI's models." },
+    { keywords: ["who are you", "your identity", "what are you"], reply: "I'm NIQ AI created by Nikhil." },
+    { keywords: ["your name", "what's your name"], reply: "My name is NIQ AI , created by Nikhil." },
+    { keywords: ["who made you", "who created you", "who build you"], reply: "I was developed by Nikhil using models." },
     { keywords: ["what can you do"], reply: "I can answer your questions, explain concepts, and more." },
   ];
 
@@ -89,4 +89,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
-
