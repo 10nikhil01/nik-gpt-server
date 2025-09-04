@@ -71,7 +71,7 @@ app.post('/chat', async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'openai/gpt-4.1-mini',
+      model: 'deepseek/deepseek-chat-v3.1:free',
       max_tokens: 400,
       messages: [{ role: 'user', content: prompt }],
     });
@@ -89,5 +89,6 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
+
 
 
