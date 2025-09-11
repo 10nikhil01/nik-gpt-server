@@ -10,29 +10,30 @@ const app = express();
 // ✅ Allow only your frontend
 const allowedOrigins = ['https://niqai.in'];
 
-const corsOptions = {
-  origin: function (origin: string | undefined, callback: any) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'OPTIONS'],
-  credentials: true,
-  optionsSuccessStatus: 204,
-  preflightContinue: false,
-};
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
 
-app.use(cors(corsOptions));
+  // Handle OPTIONS preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
+app.use(express.json());
 
 // ✅ Referrer-Policy
 app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'no-referrer');
   next();
 });
-
-app.use(express.json());
 
 // ✅ OpenRouter AI Setup
 const openai = new OpenAI({
@@ -98,4 +99,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
+
 
