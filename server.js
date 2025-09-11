@@ -40,6 +40,10 @@ const openai = new OpenAI({
     'X-Title': 'NIQ AI',
   },
 });
+if (!process.env.OPEN_ROUTER_API_KEY) {
+  console.error("❌ OPEN_ROUTER_API_KEY missing!");
+  return res.status(500).json({ error: "Server misconfigured. API key missing." });
+}
 
 // ✅ Health Check Route
 app.get('/', (req, res) => {
@@ -111,6 +115,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
+
 
 
 
