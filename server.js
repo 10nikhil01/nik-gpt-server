@@ -25,7 +25,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // handle OPTIONS preflight requests
 
 // ✅ Referrer-Policy
 app.use((req, res, next) => {
@@ -99,3 +98,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
+
