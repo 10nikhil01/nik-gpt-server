@@ -9,7 +9,7 @@ const app = express();
 const sessions = {};
 
 // ✅ Allow only your frontend
-const allowedOrigins = ['https://niqai.in'];
+const allowedOrigins = ['https://niqai.in', 'https://nik-gpt.vercel.app'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -115,6 +115,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
+
 
 
 
