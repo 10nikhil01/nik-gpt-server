@@ -101,7 +101,7 @@ app.post("/chat", async (req, res) => {
 
     res.json({ reply });
   } catch (error) {
-    console.error("❌ Error:", error.message);
+    console.error("❌ Error:", error);
     res.status(500).json({ error: "Something went wrong on the server." });
   }
 });
@@ -111,6 +111,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🟢 Server running at http://localhost:${PORT}`);
 });
+
 
 
 
