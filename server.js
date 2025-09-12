@@ -72,7 +72,7 @@ app.post('/chat', async (req, res) => {
   try {
     const completion = await openai.chat.completions.create({
       model: 'openai/gpt-5-chat',
-      max_tokens: 400,
+      max_tokens: 800,
       messages: [{ role: 'user', content: prompt }],
     });
 
